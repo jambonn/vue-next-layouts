@@ -3,11 +3,12 @@
 </template>
 
 <script>
-import LayoutDefault from '../layouts/Default.vue'
+import { useLayout } from '../composables/useLayout'
 export default {
   name: 'Foo',
-  setup(props, context) {
-    context.emit('layout', LayoutDefault);
+  setup() {
+    const { updateLayout } = useLayout()
+    updateLayout('dark')
   }
 }
 </script>

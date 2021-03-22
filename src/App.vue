@@ -1,6 +1,6 @@
 <template>
-  <component :is="layout">
-    <router-view v-slot="{ Component }" v-model:layout="layout">
+  <component :is="`layout-${layout}`">
+    <router-view v-slot="{ Component }">
       <Suspense>
         <component :is="Component" />
       </Suspense>
@@ -8,11 +8,16 @@
   </component>
 </template>
 <script>
-import { shallowRef } from 'vue'
+import { defineAsyncComponent } from 'vue'
+import { useLayout } from './composables/useLayout'
 export default {
   name: 'App',
+  components: {
+    'LayoutDefault': defineAsyncComponent(() => import('./layouts/Default.vue')),
+    'LayoutDark': defineAsyncComponent(() => import('./layouts/Dark.vue'))
+  },
   setup() {
-    const layout = shallowRef('div')
+    const { layout } = useLayout()
     return { layout }
   },
 };
