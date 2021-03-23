@@ -3,12 +3,10 @@
 </template>
 
 <script>
-import { useLayout } from '../composables/useLayout'
 export default {
   name: 'Foo',
-  setup() {
-    const { updateLayout } = useLayout()
-    updateLayout('dark')
+  setup(props, context) {
+    context.emit('layout', 'dark')
   }
 }
 </script>
