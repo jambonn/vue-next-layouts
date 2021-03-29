@@ -76,8 +76,8 @@ async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV 
 
 if (!isTest) {
   createServer().then(({ app }) =>
-    app.listen(3000, () => {
-      console.log('http://localhost:3000')
+    app.listen(process.env.PORT || 3000, () => {
+      console.log(`http://localhost:${process.env.PORT || 3000}`)
     })
   )
 }
