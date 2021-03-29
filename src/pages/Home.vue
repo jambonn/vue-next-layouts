@@ -4,24 +4,16 @@
     <img src="../assets/logo.png" alt="logo" />
   </p>
   <button @click="state.count++">count is: {{ state.count }}</button>
-  <Foo @layout="eventUpdateLayout" />
+  <PageHome />
 </template>
 
 <script>
-import { reactive, defineAsyncComponent } from 'vue'
-import { useLayout } from '../composables/useLayout'
+import { reactive } from 'vue'
 export default {
   name: 'Home',
-  components: {
-    Foo: defineAsyncComponent(() => import('../components/Foo.vue'))
-  },
   setup () {
     const state = reactive({ count: 0 })
-    const { updateLayout } = useLayout()
-    const eventUpdateLayout = (layout) => {
-      updateLayout(layout)
-    }
-    return { state, eventUpdateLayout }
+    return { state }
   },
 }
 </script>

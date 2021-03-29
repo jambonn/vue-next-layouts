@@ -1,9 +1,9 @@
 <template>
-  <p>Footer</p>
+  <PageCollections />
 </template>
 
 <script>
 export default {
-  name: 'Foo',
+  name: "Collections"
 }
 </script>

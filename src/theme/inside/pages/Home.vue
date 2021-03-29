@@ -1,9 +1,10 @@
 <template>
-  <p>Footer</p>
+  <h2>Homepage</h2>
 </template>
 
 <script>
 export default {
-  name: 'Foo',
+  name: "Home",
+  layout: "LayoutDark",
 }
 </script>

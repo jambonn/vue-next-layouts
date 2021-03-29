@@ -1,5 +1,5 @@
 <template>
-  <component :is="`layout-${layout}`">
+  <component :is="layout">
     <router-view v-slot="{ Component }">
       <Suspense>
         <component :is="Component" />
@@ -8,17 +8,17 @@
   </component>
 </template>
 <script>
-import { defineAsyncComponent } from 'vue'
-import { useLayout } from './composables/useLayout'
+import { defineAsyncComponent, computed } from 'vue'
+import { useStore } from './store'
+
 export default {
   name: 'App',
   components: {
     'LayoutDefault': defineAsyncComponent(() => import('./layouts/Default.vue')),
-    'LayoutDark': defineAsyncComponent(() => import('./layouts/Dark.vue'))
   },
   setup() {
-    const { layout } = useLayout()
-    return { layout }
+    const store = useStore()
+    return { layout: computed(() => store.state.layout) }
   },
 };
 </script>

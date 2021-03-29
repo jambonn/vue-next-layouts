@@ -1,13 +1,13 @@
 <template>
-  <div class="LayoutDefault">
-    <nav class="LayoutDefault__nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/collections">Collections</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
+  <div class="LayoutDefault dark">
     <main class="LayoutDefault__main">
       <slot/>
     </main>
+    <nav class="LayoutDefault__nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="collections">Collections</router-link> |
+      <router-link to="/about">About</router-link>
+    </nav>
     <footer class="LayoutDefault__footer">
       &copy; Jambon
     </footer>
@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: 'LayoutDefault',
+  name: 'LayoutDark',
 };
 </script>
 
@@ -44,6 +44,13 @@ export default {
   padding-top: 1em;
   padding-bottom: 1em;
   border-top: 1px solid #c0c0c0;
+}
+.LayoutDefault.dark {
+  background-color: #000000;
+  color: #ffffff;
+}
+.LayoutDefault.dark a {
+  color: #ffffff;
 }
 </style>
 

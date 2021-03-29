@@ -1,6 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
+const compile = require('lodash.template')
+const contextMiddleware = require('./src/middleware/context')
 
 const isTest = process.env.NODE_ENV === 'test' || !!process.env.VITE_TEST_BUILD
 
@@ -27,6 +29,7 @@ async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV 
     })
     // use vite's connect instance as middleware
     app.use(vite.middlewares)
+    app.use(contextMiddleware);
   } else {
     app.use(require('compression')())
     app.use(
@@ -50,10 +53,14 @@ async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV 
         render = require('./dist/server/entry-server.js').render
       }
 
-      const [appHtml, preloadLinks] = await render(url, manifest)
-      const html = template
-        .replace(`<!--preload-links-->`, preloadLinks)
-        .replace(`<!--app-html-->`, appHtml)
+      const [appHtml, preloadLinks] = await render(req.context, manifest)
+      // Init lodash template options
+      const compileOptions = {
+        escape: /{{([^{][\s\S]+?[^}])}}/g,
+        interpolate: /{{{([\s\S]+?)}}}/g,
+      }
+      const templateCompile = compile(template, compileOptions)
+      const html = templateCompile({ appHtml, preloadLinks, state: JSON.stringify(req.context.state || {}) })
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (e) {

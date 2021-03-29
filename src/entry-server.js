@@ -1,12 +1,18 @@
 import { renderToString } from '@vue/server-renderer'
 import { createApp } from './main'
+import { layout } from './utils/layout'
 
-export async function render(url, manifest) {
-  const { app, router } = createApp()
+export async function render(context, manifest) {
+  const { app, router, store } = createApp()
 
   // set the router to the desired URL before rendering
-  router.push(url)
+  router.push(context.url)
   await router.isReady()
+
+  const globalComponent = router.currentRoute.value.meta.globalComponent || '';
+  await layout({ metaComponent: globalComponent, app, store });
+
+  context.state = store.state
 
   // passing SSR context object which will be available via useSSRContext()
   // @vitejs/plugin-vue injects code into a component's setup() that registers
