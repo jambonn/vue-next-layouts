@@ -5,6 +5,9 @@
 <script>
 export default {
   name: "Collections",
-  layout: "LayoutDefault"
+  layout (context) {
+    console.log('context', context.store.state)
+    return 'LayoutDefault'
+  },
 }
 </script>

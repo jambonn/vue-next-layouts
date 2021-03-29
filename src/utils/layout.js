@@ -1,4 +1,4 @@
-export async function layout ({ metaComponent, app, store }) {
+export async function layout ({ metaComponent, app, store, context }) {
   if (metaComponent) {
     const component = app.component(metaComponent);
     if (!component) {
@@ -9,6 +9,10 @@ export async function layout ({ metaComponent, app, store }) {
     if (!layout && component.__asyncLoader) {
       const asyncLoader = await component.__asyncLoader()
       layout = asyncLoader.layout;
+    }
+
+    if (typeof layout === 'function') {
+      layout = layout(context)
     }
 
     store.dispatch('setLayout', layout || 'LayoutDefault');

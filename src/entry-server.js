@@ -3,14 +3,19 @@ import { createApp } from './main'
 import { layout } from './utils/layout'
 
 export async function render(context, manifest) {
-  const { app, router, store } = createApp()
+  const { app, router, store } = createApp(context)
 
   // set the router to the desired URL before rendering
   router.push(context.url)
   await router.isReady()
 
   const globalComponent = router.currentRoute.value.meta.globalComponent || '';
-  await layout({ metaComponent: globalComponent, app, store });
+  await layout({
+    metaComponent: globalComponent,
+    context: Object.assign({}, app.context),
+    app,
+    store,
+  });
 
   context.state = store.state
 

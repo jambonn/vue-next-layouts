@@ -14,7 +14,12 @@ if (window.__INITIAL_STATE__) {
   r.beforeResolve(async (to, from, next) => {
     const resolve = r.resolve(to);
     const globalComponent = resolve.meta.globalComponent || '';
-    await layout({ metaComponent: globalComponent, app: a, store: s });
+    await layout({
+      metaComponent: globalComponent,
+      context: Object.assign({}, a.context, { route: resolve }),
+      app: a,
+      store: s
+    });
 
     next()
   })

@@ -29,7 +29,6 @@ async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV 
     })
     // use vite's connect instance as middleware
     app.use(vite.middlewares)
-    app.use(contextMiddleware);
   } else {
     app.use(require('compression')())
     app.use(
@@ -38,6 +37,8 @@ async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV 
       })
     )
   }
+
+  app.use(contextMiddleware);
 
   app.use('*', async (req, res) => {
     try {
