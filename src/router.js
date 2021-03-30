@@ -34,6 +34,11 @@ const routes = [
     component: () => import('./pages/About.vue'),
     meta: { globalComponent: 'PageAbout' },
   },
+  {
+    path: typeof window === 'undefined' ? '/page-not-found' : '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('./pages/NotFound.vue'),
+  },
 ];
 
 export function createRouter() {

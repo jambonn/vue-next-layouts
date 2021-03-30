@@ -5,6 +5,7 @@ export function createStore() {
   return baseCreateStore({
     state: {
       layout: 'LayoutDefault',
+      error: null,
     },
     actions,
     mutations,

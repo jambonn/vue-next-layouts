@@ -65,6 +65,10 @@ async function createServer(root = process.cwd(), isProd = process.env.NODE_ENV 
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (e) {
+      if (e.code === 404) {
+        return res.status(404).redirect(`/page-not-found?from=${req.url}`)
+      }
+
       vite && vite.ssrFixStacktrace(e)
       console.log(e.stack)
       res.status(500).end(e.stack)

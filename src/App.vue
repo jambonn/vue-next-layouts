@@ -1,10 +1,6 @@
 <template>
   <component :is="layout">
-    <router-view v-slot="{ Component }">
-      <Suspense>
-        <component :is="Component" />
-      </Suspense>
-    </router-view>
+    <component :is="page" />
   </component>
 </template>
 <script>
@@ -15,10 +11,17 @@ export default {
   name: 'App',
   components: {
     'LayoutDefault': defineAsyncComponent(() => import('./layouts/Default.vue')),
+    'LayoutError': defineAsyncComponent(() => import('./layouts/Error.vue')),
   },
   setup() {
     const store = useStore()
-    return { layout: computed(() => store.state.layout) }
+    const page = computed(() => {
+      if (store.state.error) {
+        return 'LayoutError'
+      }
+      return 'RouterView'
+    })
+    return { layout: computed(() => store.state.layout), page }
   },
 };
 </script>

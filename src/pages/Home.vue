@@ -15,6 +15,11 @@ export default {
     const state = reactive({ count: 0 })
     return { state }
   },
+  asyncData (context) {
+    return new Promise(async (resolve, reject) => {
+      return reject({ code: 404 })
+    })
+  },
 }
 </script>
 

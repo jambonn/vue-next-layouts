@@ -9,15 +9,30 @@ export async function render(context, manifest) {
   router.push(context.url)
   await router.isReady()
 
-  const globalComponent = router.currentRoute.value.meta.globalComponent || '';
-  await layout({
-    metaComponent: globalComponent,
-    context: Object.assign({}, app.context),
-    app,
-    store,
+  const current = router.currentRoute.value
+  if (!current.matched.length) {
+    return Promise.reject({ code: 404 });
+  }
+
+  const components = [];
+  current.matched.flatMap((record) => {
+    components.push(...Object.values(record.components));
   });
 
-  context.state = store.state
+  try {
+    await Promise.all(components.map(({ asyncData }) => asyncData && asyncData(app.context)));
+
+    const globalComponent = current.meta.globalComponent || '';
+    await layout({
+      metaComponent: globalComponent,
+      context: Object.assign({}, app.context),
+      app,
+      store,
+    });
+    context.state = store.state;
+  } catch (err) {
+    return Promise.reject({ code: err && err.code ? err.code : 500, err: err });
+  }
 
   // passing SSR context object which will be available via useSSRContext()
   // @vitejs/plugin-vue injects code into a component's setup() that registers
