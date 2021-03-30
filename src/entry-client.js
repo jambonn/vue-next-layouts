@@ -45,8 +45,11 @@ if (window.__INITIAL_STATE__) {
       return next();
     }
 
-    try {
+    if (s.state.error) {
       s.dispatch('setError', null)
+    }
+
+    try {
       const context = Object.assign({}, a.context, { route: resolve });
       await Promise.all(components.map(({ asyncData }) => asyncData && asyncData(context)));
 

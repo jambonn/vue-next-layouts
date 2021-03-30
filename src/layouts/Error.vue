@@ -13,8 +13,8 @@
 </template>
 
 <script>
+import { computed } from 'vue'
 import { useStore } from '../store'
-import {computed} from "vue";
 export default {
   setup() {
     const store = useStore()
